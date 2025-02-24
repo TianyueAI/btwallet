@@ -1153,6 +1153,22 @@ except argparse.ArgumentError:
             })
     }
 
+    #[pyo3(
+        signature = (password)
+    )]
+    fn lingsi_unlock_coldkey(&mut self, password: Option<String>) -> PyResult<PyKeypair> {
+        self.inner
+            .lingsi_unlock_coldkey(password)
+            .map(|inner| PyKeypair { inner })
+            .map_err(|e| match e {
+                KeyFileError::DecryptionError(_) => PyErr::new::<PyPasswordError, _>(format!(
+                    "Decryption failed: {}",
+                    e.to_string()
+                )),
+                _ => PyErr::new::<PyKeyFileError, _>(format!("Keyfile error: {:?}", e)),
+            })
+    }
+
     #[pyo3(text_signature = "($self)")]
     fn unlock_coldkeypub(&mut self) -> PyResult<PyKeypair> {
         self.inner

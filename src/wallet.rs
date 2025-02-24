@@ -523,6 +523,22 @@ impl Wallet {
         Ok(_coldkey)
     }
 
+    /// Unlocks the coldkey.
+    pub fn lingsi_unlock_coldkey(
+        &mut self,
+        password: Option<String>,
+    ) -> Result<Keypair, KeyFileError> {
+        if self._coldkey.is_none() {
+            let coldkey_file = self.coldkey_file()?;
+            self._coldkey = Some(coldkey_file.get_keypair(password)?);
+        }
+        let _coldkey = self
+            ._coldkey
+            .clone()
+            .ok_or_else(|| KeyFileError::Generic("Coldkey file doesn't exist.".to_string()))?;
+        Ok(_coldkey)
+    }
+
     /// Unlocks the coldkeypub.
     pub fn unlock_coldkeypub(&mut self) -> Result<Keypair, KeyFileError> {
         if self._coldkeypub.is_none() {

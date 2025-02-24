@@ -155,7 +155,7 @@ IMPORTANT: Store this mnemonic in a secure (preferable offline place), as anyone
 
 ```
 
-The above will create a wallet with "my_wallet_name". 
+The above will create a wallet with "my_wallet_name".
 
 **3. Use your own config**
 
@@ -165,3 +165,7 @@ config = Config()
 ```
 
 ---
+
+#### 编译生成.whl 文件
+
+> maturin build --release
